@@ -20,10 +20,6 @@ import java.util.Locale;
 
 public class TitleChangeCommand {
 
-    /**
-     * TODO:
-     */
-
     private static final short MAX_LENGTH = 141;
     private final TwitchClient twitchClient = UserHandler.getTwitchClient();
 
