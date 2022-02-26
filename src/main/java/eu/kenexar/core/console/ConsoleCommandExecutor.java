@@ -1,4 +1,4 @@
-package de.zerx.core.console;
+package eu.kenexar.core.console;
 
 /**
  * Created by Till O. aka. ZerX

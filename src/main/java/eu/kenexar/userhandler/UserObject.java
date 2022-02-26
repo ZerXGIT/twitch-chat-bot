@@ -1,4 +1,4 @@
-package de.zerx.userhandler;
+package eu.kenexar.userhandler;
 
 import java.util.ArrayList;
 

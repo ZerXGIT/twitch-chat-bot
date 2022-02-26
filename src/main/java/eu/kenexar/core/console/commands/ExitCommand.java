@@ -1,7 +1,7 @@
-package de.zerx.core.console.commands;
+package eu.kenexar.core.console.commands;
 
-import de.zerx.core.console.ConsoleCommandExecutor;
-import de.zerx.core.logger.MainLogger;
+import eu.kenexar.core.console.ConsoleCommandExecutor;
+import eu.kenexar.core.logger.MainLogger;
 
 /**
  * Created by Till O. aka. ZerX

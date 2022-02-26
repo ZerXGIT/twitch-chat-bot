@@ -1,12 +1,11 @@
-package de.zerx.userhandler;
+package eu.kenexar.userhandler;
 
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
-import de.zerx.commands.GameChangeCommand;
-import de.zerx.commands.TitleChangeCommand;
-import de.zerx.constants.LoginData;
-import de.zerx.core.logger.MainLogger;
+import eu.kenexar.commands.CommandManager;
+import eu.kenexar.constants.LoginData;
+import eu.kenexar.core.logger.MainLogger;
 import feign.Logger;
 
 /**
@@ -19,9 +18,6 @@ import feign.Logger;
 public class UserHandler {
 
     private static TwitchClient TwitchClient;
-
-    public UserHandler() {
-    }
 
     public static TwitchClient getTwitchClient() {
         return TwitchClient;
@@ -39,7 +35,6 @@ public class UserHandler {
                 .withFeignLogLevel(Logger.Level.FULL)
                 .build();
 
-
         registerEvents();
         registerStreamer();
     }
@@ -48,8 +43,7 @@ public class UserHandler {
         var simpleEventHandler = TwitchClient.getEventManager().getEventHandler(SimpleEventHandler.class);
 
         // Commands
-        new TitleChangeCommand(simpleEventHandler);
-        new GameChangeCommand(simpleEventHandler);
+        new CommandManager(simpleEventHandler);
     }
 
     private void registerStreamer() {

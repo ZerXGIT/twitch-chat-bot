@@ -1,6 +1,7 @@
-package de.zerx.core.console;
+package eu.kenexar.core.console;
 
-import de.zerx.core.logger.ExceptionLogger;
+import eu.kenexar.core.logger.ExceptionLogger;
+import eu.kenexar.core.utils.CommandArgsParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +14,14 @@ import java.util.List;
  */
 public class ConsoleManager {
 
-    private static List<ConsoleCommandExecutor> listeners;
+    private static final List<ConsoleCommandExecutor> listeners = new ArrayList<>();
 
-    public ConsoleManager() {
+    static {
         new Console();
-        listeners = new ArrayList<>();
     }
 
     protected static void triggerEvents(String str) {
-        var parser = new ConsoleArgsParser(str);
+        var parser = new CommandArgsParser(str);
 
         for (ConsoleCommandExecutor listener : listeners) {
             try {
@@ -32,7 +32,7 @@ public class ConsoleManager {
         }
     }
 
-    public void addListener(ConsoleCommandExecutor listener) {
+    public static void addListener(ConsoleCommandExecutor listener) {
         listeners.add(listener);
     }
 }

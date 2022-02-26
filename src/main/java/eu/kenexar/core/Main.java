@@ -1,21 +1,22 @@
-package de.zerx.core;
+package eu.kenexar.core;
 
-import de.zerx.core.console.ConsoleManager;
-import de.zerx.core.console.commands.ExitCommand;
-import de.zerx.core.mysql.MySQL;
-import de.zerx.userhandler.UserHandler;
-import de.zerx.userhandler.UserObject;
+import eu.kenexar.commands.CommandManager;
+import eu.kenexar.commands.runnable.GameChangeCommand;
+import eu.kenexar.commands.runnable.TitleChangeCommand;
+import eu.kenexar.core.console.ConsoleManager;
+import eu.kenexar.core.console.commands.ExitCommand;
+import eu.kenexar.userhandler.UserHandler;
+import eu.kenexar.userhandler.UserObject;
 import io.github.cdimascio.dotenv.Dotenv;
 
-import java.sql.*;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
-  /*    var consoleManager = new ConsoleManager();
-        consoleManager.addListener(new ExitCommand());
+    public static void main(String[] args){
+        ConsoleManager.addListener(new ExitCommand());
 
+        CommandManager.addListener(new TitleChangeCommand());
+        CommandManager.addListener(new GameChangeCommand());
 
         // Rewrite user managment
         var userObject = new UserObject();
@@ -25,11 +26,11 @@ public class Main {
 
         var clientHandler = new UserHandler();
         clientHandler.init();
-*/
 
-        ResultSet rs = MySQL.getConnection().prepareStatement("SELECT * FROM `kenexar-rp`.addon_account;").executeQuery();
 
-        System.out.println(rs.getMetaData().getColumnLabel(4));
+        //System.out.println(MySQL.get("SELECT * FROM `kenexar-rp`.addon_account;").getMetaData().getColumnLabel(1));
+
+
     }
 
     /**

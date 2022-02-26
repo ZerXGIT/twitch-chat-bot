@@ -1,6 +1,6 @@
-package de.zerx.core.console;
+package eu.kenexar.core.console;
 
-import de.zerx.constants.Banner;
+import eu.kenexar.constants.Banner;
 
 import java.util.Scanner;
 

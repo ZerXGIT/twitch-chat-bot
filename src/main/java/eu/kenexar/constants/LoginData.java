@@ -1,4 +1,4 @@
-package de.zerx.constants;
+package eu.kenexar.constants;
 
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import io.github.cdimascio.dotenv.Dotenv;

@@ -1,4 +1,4 @@
-package de.zerx.constants;
+package eu.kenexar.constants;
 
 /**
  * Created by Till O. aka. ZerX
