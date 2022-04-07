@@ -34,21 +34,20 @@ public class CommandManager {
             if (parser.getCommandString().equalsIgnoreCase(prefix + trigger)) {
                 if (restricted) {
                     if (isMod(twitchClient, event))
-                        listener.onCommand(event, parser.getCommandArgs(), twitchClient);
+                        listener.onCommand(event, UserObject.getToken(event.getChannel().getName()), parser.getCommandArgs(), twitchClient);
                     else
                         sendNoPerms(event);
                 } else {
-                    listener.onCommand(event, parser.getCommandArgs(), twitchClient);
+                    listener.onCommand(event, UserObject.getToken(event.getChannel().getName()), parser.getCommandArgs(), twitchClient);
                 }
             }
         }
     }
 
     private static boolean isMod(TwitchClient twitchClient, ChannelMessageEvent event) {
-        var user = new UserObject();
         String channelName = event.getChannel().getName();
-        ModeratorList moderatorList = twitchClient.getHelix().getModerators(user.getToken(channelName),
-                event.getChannel().getId(), null, null).execute();
+        ModeratorList moderatorList = twitchClient.getHelix().getModerators(UserObject.getToken(channelName),
+                event.getChannel().getId(), null, null, 100).execute();
 
         AtomicBoolean isMod = new AtomicBoolean(false);
 

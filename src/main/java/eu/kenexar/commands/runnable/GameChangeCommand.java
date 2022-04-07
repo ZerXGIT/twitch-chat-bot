@@ -7,6 +7,7 @@ import com.github.twitch4j.helix.domain.Game;
 import eu.kenexar.commands.CommandExecutor;
 import eu.kenexar.commands.CommandProperties;
 import eu.kenexar.userhandler.UserObject;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
@@ -24,24 +25,26 @@ import java.util.List;
 public class GameChangeCommand implements CommandExecutor {
 
     @Override
-    public void onCommand(ChannelMessageEvent event, String[] args, TwitchClient twitchClient) {
+    public void onCommand(ChannelMessageEvent event, String authToken, String[] args, TwitchClient twitchClient) {
         var channelName = event.getChannel().getName();
-        var user = new UserObject();
+        var userName = event.getUser().getName();
+        var argsString = StringUtils.join(args, " ");
 
-        String inputSting = null;
-
-        try {
-            inputSting = event.getMessage().substring(6);
-            List<Game> result = twitchClient.getHelix().searchCategories(user.getToken(channelName), inputSting, 1, null).execute().getResults();
-
-            if (result != null) {
-                Game game = result.get(0);
-                twitchClient.getHelix().updateChannelInformation(user.getToken(channelName), event.getChannel().getId(), new ChannelInformation().withGameId(game.getId())).execute();
-                event.getTwitchChat().sendMessage(channelName, "@" + event.getUser().getName() + " -> Das Game wurde auf: " + game.getName() + " gesetzt.");
-            } else
-                event.getTwitchChat().sendMessage(channelName, "@" + event.getUser().getName() + " -> Fehler: Das Game konnte nicht gefunden werden.");
-        } catch (Exception ex) {
-            event.getTwitchChat().sendMessage(channelName, "@" + event.getUser().getName() + " -> Fehler: Du hast kein Game angegeben oder es wurde nicht gefunden!");
+        if(args.length < 1) {
+            event.getTwitchChat().sendMessage(channelName, "@" + userName + " -> Fehler: Du hast kein Game angegeben!");
+            return;
         }
+
+        List<Game> result = twitchClient.getHelix().searchCategories(authToken, argsString, 1, null).execute().getResults();
+
+        if (result == null) {
+            event.getTwitchChat().sendMessage(channelName, "@" + userName + " -> Fehler: Das Game konnte nicht gefunden werden.");
+            return;
+        }
+
+        Game game = result.get(0);
+        twitchClient.getHelix().updateChannelInformation(authToken, event.getChannel().getId(), new ChannelInformation().withGameId(game.getId())).execute();
+        event.getTwitchChat().sendMessage(channelName, "@" + userName + " -> Das Game wurde auf: " + game.getName() + " gesetzt.");
     }
+
 }

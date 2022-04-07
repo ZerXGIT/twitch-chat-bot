@@ -2,9 +2,11 @@ package eu.kenexar.commands.runnable;
 
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
+import com.github.twitch4j.helix.domain.ChannelInformation;
 import eu.kenexar.commands.CommandExecutor;
 import eu.kenexar.commands.CommandProperties;
 import eu.kenexar.userhandler.UserObject;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Created by Till O. aka. ZerX
@@ -21,26 +23,23 @@ public class TitleChangeCommand implements CommandExecutor {
 
     private static final short MAX_LENGTH = 141;
 
-    public void onCommand(ChannelMessageEvent event, String[] args, TwitchClient twitchClient) {
-        UserObject user = new UserObject();
-        String channelName = event.getChannel().getName();
+    public void onCommand(ChannelMessageEvent event, String authToken, String[] args, TwitchClient twitchClient) {
+        var channelName = event.getChannel().getName();
+        var userName = event.getUser().getName();
+        var argsString = StringUtils.join(args, " ");
 
-        String inputString = null;
-
-        try {
-            inputString = event.getMessage().substring(7);
-
-            if (inputString.length() > MAX_LENGTH) {
-                event.getTwitchChat().sendMessage(channelName, "@" + event.getUser().getName() + " -> Du hast die maximale Anzahl von Zeichen überschritten!");
-                return;
-            }
-
-            twitchClient.getKraken().updateTitle(user.getToken(channelName), event.getChannel().getId(), inputString).execute();
-            event.getTwitchChat().sendMessage(channelName, "@" + event.getUser().getName() + " -> Der Titel wurde auf: \"" + inputString + "\" geändert!");
-        } catch (IndexOutOfBoundsException exception) {
-            event.getTwitchChat().sendMessage(channelName, "@" + event.getUser().getName() + " -> Der Title ist momentan: \n" + "TODO: GET TITLE" + "\"");
-            //event.getTwitchChat().sendMessage(channelName, "@" + event.getUser().getName() + " -> Es wurde kein Title angegeben!");
+        if(args.length < 1) {
+            event.getTwitchChat().sendMessage(channelName, "@" + userName + " -> Der Title ist momentan: \n" + "TODO: GET TITLE" + "\"");
+            return;
         }
+
+        if (argsString.length() > MAX_LENGTH) {
+            event.getTwitchChat().sendMessage(channelName, "@" + userName + " -> Du hast die maximale Anzahl von Zeichen überschritten!");
+            return;
+        }
+
+        twitchClient.getHelix().updateChannelInformation(authToken, event.getChannel().getId(), new ChannelInformation().withTitle(argsString)).execute();
+        event.getTwitchChat().sendMessage(channelName, "@" + userName + " -> Der Titel wurde auf: \"" + argsString + "\" geändert!");
     }
 }
 

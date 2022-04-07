@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public class UserObject {
 
     private static final ArrayList<UserObject> Users = new ArrayList<>();
-    private static String Name;
-    private static String Token;
+    private String Name;
+    private String Token;
 
     public UserObject(String Name, String Token) {
         this.Name = Name;
@@ -38,7 +38,7 @@ public class UserObject {
         return Token;
     }
 
-    public String getToken(String Name) throws NullPointerException {
+    public static String getToken(String Name) throws NullPointerException {
         for (UserObject user : Users)
             if (user.getName().equalsIgnoreCase(Name)) return user.getToken();
 

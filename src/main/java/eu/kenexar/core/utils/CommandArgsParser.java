@@ -8,27 +8,14 @@ package eu.kenexar.core.utils;
  */
 public class CommandArgsParser {
 
-    private String inputString = "";
+    private final String inputString;
 
-    private static String prefix = "";
-
-    public CommandArgsParser(String str) {
-        inputString = str;
-    }
-
-    public CommandArgsParser(String str, String prefix) {
-        inputString = str;
-        CommandArgsParser.prefix = prefix;
+    public CommandArgsParser(String inputString) {
+        this.inputString = inputString;
     }
 
     public String getCommandString() {
-        var splitString = inputString.split(" ")[0];
-        if (prefix == null) {
-            if (splitString.startsWith(prefix))
-                return splitString.substring(1);
-        }
-
-        return splitString;
+        return inputString.split(" ")[0];
     }
 
     public String[] getCommandArgs() {
