@@ -8,13 +8,6 @@ import eu.kenexar.constants.LoginData;
 import eu.kenexar.core.logger.MainLogger;
 import feign.Logger;
 
-/**
- * Created by Till O. aka. ZerX
- * <p>
- * Project name: Twitchbot(1)
- * This file is created at 19.03.2021 16:00
- */
-
 public class UserHandler {
 
     private static TwitchClient TwitchClient;

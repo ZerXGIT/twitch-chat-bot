@@ -8,13 +8,6 @@ import eu.kenexar.commands.CommandProperties;
 import eu.kenexar.userhandler.UserObject;
 import org.apache.commons.lang.StringUtils;
 
-/**
- * Created by Till O. aka. ZerX
- * <p>
- * Project name: Twitchbot(1)
- * This file is created at 19.05.2021 16:38
- */
-
 @CommandProperties(
         trigger = "title",
         restricted = true
@@ -42,4 +35,3 @@ public class TitleChangeCommand implements CommandExecutor {
         event.getTwitchChat().sendMessage(channelName, "@" + userName + " -> Der Titel wurde auf: \"" + argsString + "\" geändert!");
     }
 }
-

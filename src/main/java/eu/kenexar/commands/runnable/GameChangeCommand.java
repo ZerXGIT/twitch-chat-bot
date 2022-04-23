@@ -11,13 +11,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
-/**
- * Created by Till O. aka. ZerX
- * <p>
- * Project name: Twitchbot(1)
- * This file is created at 22.05.2021 15:48
- */
-
 @CommandProperties(
         trigger = "game",
         restricted = true
@@ -35,7 +28,7 @@ public class GameChangeCommand implements CommandExecutor {
             return;
         }
 
-        List<Game> result = twitchClient.getHelix().searchCategories(authToken, argsString, 1, null).execute().getResults();
+        var result = twitchClient.getHelix().searchCategories(authToken, argsString, 1, null).execute().getResults();
 
         if (result == null) {
             event.getTwitchChat().sendMessage(channelName, "@" + userName + " -> Fehler: Das Game konnte nicht gefunden werden.");

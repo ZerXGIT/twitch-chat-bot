@@ -15,7 +15,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CommandManager {
 
-    private static final String prefix = "!";
     private static final List<CommandExecutor> listeners = new ArrayList<>();
 
     public CommandManager(@NotNull SimpleEventHandler simple) {
@@ -24,32 +23,34 @@ public class CommandManager {
 
     protected static void triggerEvents(@NotNull ChannelMessageEvent event) {
         var parser = new CommandArgsParser(event.getMessage());
-        TwitchClient twitchClient = UserHandler.getTwitchClient();
+        var twitchClient = UserHandler.getTwitchClient();
 
         for (CommandExecutor listener : listeners) {
-            String prefix = getCommandProperties(listener).prefix();
-            String trigger = getCommandProperties(listener).trigger();
-            boolean restricted = getCommandProperties(listener).restricted();
+            var prefix = getCommandProperties(listener).prefix();
+            var trigger = getCommandProperties(listener).trigger();
+            var restricted = getCommandProperties(listener).restricted();
 
-            if (parser.getCommandString().equalsIgnoreCase(prefix + trigger)) {
-                if (restricted) {
-                    if (isMod(twitchClient, event))
-                        listener.onCommand(event, UserObject.getToken(event.getChannel().getName()), parser.getCommandArgs(), twitchClient);
-                    else
-                        sendNoPerms(event);
-                } else {
+            if (!parser.getCommandString().equalsIgnoreCase(prefix + trigger))
+                return;
+
+            if (restricted) {
+                if (isMod(twitchClient, event))
                     listener.onCommand(event, UserObject.getToken(event.getChannel().getName()), parser.getCommandArgs(), twitchClient);
-                }
+                else
+                    sendNoPerms(event);
+            } else {
+                listener.onCommand(event, UserObject.getToken(event.getChannel().getName()), parser.getCommandArgs(), twitchClient);
             }
+
         }
     }
 
     private static boolean isMod(TwitchClient twitchClient, ChannelMessageEvent event) {
-        String channelName = event.getChannel().getName();
-        ModeratorList moderatorList = twitchClient.getHelix().getModerators(UserObject.getToken(channelName),
+        var channelName = event.getChannel().getName();
+        var moderatorList = twitchClient.getHelix().getModerators(UserObject.getToken(channelName),
                 event.getChannel().getId(), null, null, 100).execute();
 
-        AtomicBoolean isMod = new AtomicBoolean(false);
+        var isMod = new AtomicBoolean(false);
 
         moderatorList.getModerators().forEach(moderator -> {
             if ((event.getUser().getName().equals(channelName) || event.getUser().getName().equalsIgnoreCase(moderator.getUserName()))) {

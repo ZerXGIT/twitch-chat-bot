@@ -2,12 +2,6 @@ package eu.kenexar.userhandler;
 
 import java.util.ArrayList;
 
-/**
- * Created by Till O. aka. ZerX
- * <p>
- * Project name: Twitchbot(1)
- * This file is created at 05.06.2021 23:20
- */
 public class UserObject {
 
     private static final ArrayList<UserObject> Users = new ArrayList<>();
