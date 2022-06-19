@@ -22,7 +22,7 @@ public class UserHandler {
                 .withClientId(LoginData.CLIENT_ID)
                 .withClientSecret(LoginData.CLIENT_SECRET)
                 .withEnableHelix(true)
-                .withEnableKraken(true)
+
                 .withEnableChat(true)
                 .withDefaultEventHandler(SimpleEventHandler.class)
                 .withFeignLogLevel(Logger.Level.FULL)

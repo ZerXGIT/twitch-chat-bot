@@ -1,6 +1,7 @@
 package eu.kenexar.core;
 
 import eu.kenexar.commands.CommandManager;
+import eu.kenexar.commands.runnable.CreateClipCommand;
 import eu.kenexar.commands.runnable.GameChangeCommand;
 import eu.kenexar.commands.runnable.TitleChangeCommand;
 import eu.kenexar.core.console.ConsoleManager;
@@ -12,13 +13,14 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class Main {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         ConsoleManager.addListener(new ExitCommand());
 
-        CommandManager.addListener(new TitleChangeCommand());
+        CommandManager.addListener(new CreateClipCommand());
         CommandManager.addListener(new GameChangeCommand());
+        CommandManager.addListener(new TitleChangeCommand());
 
-        // Rewrite user managment
+        // Rewrite user management
         var userObject = new UserObject();
         Dotenv dotenv = Dotenv.load();
 

@@ -16,12 +16,19 @@ public class UserObject {
     public UserObject() {
     }
 
-    public void addUser(String Name, String Token) {
-        Users.add(new UserObject(Name, Token));
-    }
-
     public static ArrayList<UserObject> getUsers() {
         return Users;
+    }
+
+    public static String getToken(String Name) throws NullPointerException {
+        for (UserObject user : Users)
+            if (user.getName().equalsIgnoreCase(Name)) return user.getToken();
+
+        return "";
+    }
+
+    public void addUser(String Name, String Token) {
+        Users.add(new UserObject(Name, Token));
     }
 
     public String getName() {
@@ -30,13 +37,6 @@ public class UserObject {
 
     public String getToken() {
         return Token;
-    }
-
-    public static String getToken(String Name) throws NullPointerException {
-        for (UserObject user : Users)
-            if (user.getName().equalsIgnoreCase(Name)) return user.getToken();
-
-        return "";
     }
 
 

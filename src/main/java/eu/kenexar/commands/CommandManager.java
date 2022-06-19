@@ -3,7 +3,6 @@ package eu.kenexar.commands;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
-import com.github.twitch4j.helix.domain.ModeratorList;
 import eu.kenexar.core.utils.CommandArgsParser;
 import eu.kenexar.userhandler.UserHandler;
 import eu.kenexar.userhandler.UserObject;
@@ -21,7 +20,7 @@ public class CommandManager {
         simple.onEvent(ChannelMessageEvent.class, CommandManager::triggerEvents);
     }
 
-    protected static void triggerEvents(@NotNull ChannelMessageEvent event) {
+    private static void triggerEvents(@NotNull ChannelMessageEvent event) {
         var parser = new CommandArgsParser(event.getMessage());
         var twitchClient = UserHandler.getTwitchClient();
 
@@ -31,7 +30,7 @@ public class CommandManager {
             var restricted = getCommandProperties(listener).restricted();
 
             if (!parser.getCommandString().equalsIgnoreCase(prefix + trigger))
-                return;
+                continue;
 
             if (restricted) {
                 if (isMod(twitchClient, event))
@@ -41,7 +40,6 @@ public class CommandManager {
             } else {
                 listener.onCommand(event, UserObject.getToken(event.getChannel().getName()), parser.getCommandArgs(), twitchClient);
             }
-
         }
     }
 

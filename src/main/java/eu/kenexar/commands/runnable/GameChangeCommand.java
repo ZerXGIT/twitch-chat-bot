@@ -3,13 +3,9 @@ package eu.kenexar.commands.runnable;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import com.github.twitch4j.helix.domain.ChannelInformation;
-import com.github.twitch4j.helix.domain.Game;
 import eu.kenexar.commands.CommandExecutor;
 import eu.kenexar.commands.CommandProperties;
-import eu.kenexar.userhandler.UserObject;
 import org.apache.commons.lang.StringUtils;
-
-import java.util.List;
 
 @CommandProperties(
         trigger = "game",
@@ -21,23 +17,24 @@ public class GameChangeCommand implements CommandExecutor {
     public void onCommand(ChannelMessageEvent event, String authToken, String[] args, TwitchClient twitchClient) {
         var channelName = event.getChannel().getName();
         var userName = event.getUser().getName();
+        var chat = twitchClient.getChat();
         var argsString = StringUtils.join(args, " ");
 
-        if(args.length < 1) {
-            event.getTwitchChat().sendMessage(channelName, "@" + userName + " -> Fehler: Du hast kein Game angegeben!");
+        if (args.length < 1) {
+            chat.sendMessage(channelName, "@" + userName + " -> Fehler: Du hast kein Game angegeben!");
             return;
         }
 
         var result = twitchClient.getHelix().searchCategories(authToken, argsString, 1, null).execute().getResults();
 
         if (result == null) {
-            event.getTwitchChat().sendMessage(channelName, "@" + userName + " -> Fehler: Das Game konnte nicht gefunden werden.");
+            chat.sendMessage(channelName, "@" + userName + " -> Fehler: Das Game konnte nicht gefunden werden.");
             return;
         }
 
-        Game game = result.get(0);
+        var game = result.get(0);
         twitchClient.getHelix().updateChannelInformation(authToken, event.getChannel().getId(), new ChannelInformation().withGameId(game.getId())).execute();
-        event.getTwitchChat().sendMessage(channelName, "@" + userName + " -> Das Game wurde auf: " + game.getName() + " gesetzt.");
+        chat.sendMessage(channelName, "@" + userName + " -> Das Game wurde auf: " + game.getName() + " gesetzt.");
     }
 
 }
