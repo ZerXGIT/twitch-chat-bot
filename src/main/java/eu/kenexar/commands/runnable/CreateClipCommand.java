@@ -2,11 +2,8 @@ package eu.kenexar.commands.runnable;
 
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
-import com.github.twitch4j.helix.domain.CreateClipList;
 import eu.kenexar.commands.CommandExecutor;
 import eu.kenexar.commands.CommandProperties;
-
-import java.util.ArrayList;
 
 @CommandProperties(
         trigger = "clip",
@@ -26,10 +23,9 @@ public class CreateClipCommand implements CommandExecutor {
 
             var firstClip = clipData.getData().get(0);
 
-            chat.sendMessage(channelName,"@" + userName + " -> Der Clip wurde erfolgreich erstellt! " + "https://clips.twitch.tv/" + firstClip.getId());
-        } catch(Exception e) {
-            chat.sendMessage(channelName,"@" + userName + " -> Fehler: es ist ein Fehler aufgetreten!");
+            chat.sendMessage(channelName, "@" + userName + " -> Der Clip wurde erfolgreich erstellt! " + "https://clips.twitch.tv/" + firstClip.getId());
+        } catch (Exception e) {
+            chat.sendMessage(channelName, "@" + userName + " -> Fehler: es ist ein Fehler aufgetreten!");
         }
-
     }
 }

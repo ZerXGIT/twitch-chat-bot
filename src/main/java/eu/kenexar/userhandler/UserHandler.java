@@ -10,14 +10,14 @@ import feign.Logger;
 
 public class UserHandler {
 
-    private static TwitchClient TwitchClient;
+    private static TwitchClient twitchClient;
 
     public static TwitchClient getTwitchClient() {
-        return TwitchClient;
+        return twitchClient;
     }
 
     public void init() {
-        TwitchClient = TwitchClientBuilder.builder()
+        twitchClient = TwitchClientBuilder.builder()
                 .withChatAccount(LoginData.CLIENT_CREDENTIAL)
                 .withClientId(LoginData.CLIENT_ID)
                 .withClientSecret(LoginData.CLIENT_SECRET)
@@ -33,18 +33,17 @@ public class UserHandler {
     }
 
     private void registerEvents() {
-        var simpleEventHandler = TwitchClient.getEventManager().getEventHandler(SimpleEventHandler.class);
-
         // Commands
-        new CommandManager(simpleEventHandler);
+
+        new CommandManager(twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class));
     }
 
     private void registerStreamer() {
         for (UserObject user : UserObject.getUsers()) {
             try {
-                if (!(TwitchClient.getChat().isChannelJoined(user.getName()))) {
+                if (!(twitchClient.getChat().isChannelJoined(user.getName()))) {
                     MainLogger.get().info("Joined Channel: " + user.getName());
-                    TwitchClient.getChat().joinChannel(user.getName());
+                    twitchClient.getChat().joinChannel(user.getName());
                 }
             } catch (Throwable e) {
                 System.out.println("ERROR: \"" + user.getName() + "\" token may be invalid!");

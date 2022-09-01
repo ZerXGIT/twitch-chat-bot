@@ -28,18 +28,50 @@ public class CommandManager {
             var prefix = getCommandProperties(listener).prefix();
             var trigger = getCommandProperties(listener).trigger();
             var restricted = getCommandProperties(listener).restricted();
+            var channelOnly = getCommandProperties(listener).channelOnly();
+            var alias = getCommandProperties(listener).alias();
 
-            if (!parser.getCommandString().equalsIgnoreCase(prefix + trigger))
-                continue;
 
-            if (restricted) {
-                if (isMod(twitchClient, event))
-                    listener.onCommand(event, UserObject.getToken(event.getChannel().getName()), parser.getCommandArgs(), twitchClient);
-                else
-                    sendNoPerms(event);
-            } else {
-                listener.onCommand(event, UserObject.getToken(event.getChannel().getName()), parser.getCommandArgs(), twitchClient);
+            if (checkCommand(parser, prefix, trigger, alias)) continue;
+
+
+            if (channelOnly.equalsIgnoreCase("none")) {
+                callCommand(restricted, twitchClient, event, listener, parser);
+            } else if (event.getChannel().getName().equalsIgnoreCase(channelOnly)) {
+                callCommand(restricted, twitchClient, event, listener, parser);
             }
+        }
+    }
+
+    private static boolean checkCommand(CommandArgsParser parser, String prefix, String trigger, String[] alias) {
+        if (!parser.getCommandString().equalsIgnoreCase(prefix + trigger)) {
+            boolean foundMatch = false;
+
+
+            while (true) {
+                String test = "peter";
+
+                break;
+            }
+
+            for (String str : alias) {
+                if (parser.getCommandString().equalsIgnoreCase(prefix + str))
+                    foundMatch = true;
+            }
+            if (!foundMatch)
+                return true;
+        }
+        return false;
+    }
+
+    private static void callCommand(boolean restricted, TwitchClient twitchClient, @NotNull ChannelMessageEvent event, CommandExecutor listener, CommandArgsParser parser) {
+        if (restricted) {
+            if (isMod(twitchClient, event))
+                listener.onCommand(event, UserObject.getToken(event.getChannel().getName()), parser.getCommandArgs(), twitchClient);
+            else
+                sendNoPerms(event);
+        } else {
+            listener.onCommand(event, UserObject.getToken(event.getChannel().getName()), parser.getCommandArgs(), twitchClient);
         }
     }
 

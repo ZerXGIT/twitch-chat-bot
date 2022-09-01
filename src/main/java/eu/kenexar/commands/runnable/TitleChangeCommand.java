@@ -12,7 +12,6 @@ import org.apache.commons.lang.StringUtils;
         restricted = true
 )
 public class TitleChangeCommand implements CommandExecutor {
-
     private static final short MAX_LENGTH = 141;
 
     public void onCommand(ChannelMessageEvent event, String authToken, String[] args, TwitchClient twitchClient) {

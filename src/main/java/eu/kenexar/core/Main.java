@@ -4,6 +4,7 @@ import eu.kenexar.commands.CommandManager;
 import eu.kenexar.commands.runnable.CreateClipCommand;
 import eu.kenexar.commands.runnable.GameChangeCommand;
 import eu.kenexar.commands.runnable.TitleChangeCommand;
+import eu.kenexar.commands.runnable.YoutubeCommandAndre;
 import eu.kenexar.core.console.ConsoleManager;
 import eu.kenexar.core.console.commands.ExitCommand;
 import eu.kenexar.userhandler.UserHandler;
@@ -19,12 +20,14 @@ public class Main {
         CommandManager.addListener(new CreateClipCommand());
         CommandManager.addListener(new GameChangeCommand());
         CommandManager.addListener(new TitleChangeCommand());
+        CommandManager.addListener(new YoutubeCommandAndre());
 
         // Rewrite user management
         var userObject = new UserObject();
         Dotenv dotenv = Dotenv.load();
 
         userObject.addUser("zerxdelive", dotenv.get("ZERX_TOKEN"));
+        //  userObject.addUser("andredelive", dotenv.get("ANDRE_TOKEN"));
 
         var clientHandler = new UserHandler();
         clientHandler.init();

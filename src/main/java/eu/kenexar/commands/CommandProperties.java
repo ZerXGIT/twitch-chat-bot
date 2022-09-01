@@ -7,6 +7,10 @@ import java.lang.annotation.RetentionPolicy;
 public @interface CommandProperties {
     String trigger();
 
+    String channelOnly() default "none";
+
+    String[] alias() default {};
+
     String prefix() default "!";
 
     boolean restricted() default false;
